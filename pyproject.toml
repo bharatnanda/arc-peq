@@ -1,0 +1,10 @@
+[project]
+name = "arc-peq"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "hidapi>=0.14,<0.15",
+    "pillow>=10,<13",
+    "pyinstaller>=6,<7",
+    "pyside6>=6.6,<7",
+]

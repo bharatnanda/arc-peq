@@ -22,8 +22,7 @@ A small, cross-platform desktop app (macOS, Windows, Linux) for tuning the built
 | --- | --- |
 | ![Balanced Daily preset](docs/images/main.png) | ![Gaming preset with a lowered output level](docs/images/gaming-level.png) |
 
-*Screenshots are taken in demo mode (`python run.py --demo`). Regenerate them with
-`python docs/make_screenshots.py`.*
+Generate Screenshots - `python docs/make_screenshots.py`.*
 
 ---
 
