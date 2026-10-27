@@ -1,15 +1,29 @@
 [project]
 name = "arc-peq"
 version = "1.0.0"
-requires-python = ">=3.12"
+description = "Unofficial desktop EQ editor for the Audiocular Arc USB-C IEM dongle"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Bharat Nanda" }]
+requires-python = ">=3.10"
 dependencies = [
     "hidapi>=0.14,<0.15",
     "pyside6>=6.6,<7",
 ]
 
+[project.scripts]
+arc-peq = "arcpeq.app:main"
+
 [dependency-groups]
 dev = [
     "pillow>=10,<13",
-    "pyflakes>=4.0.3",
     "pyinstaller>=6,<7",
+    "pyflakes",
 ]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["arcpeq"]

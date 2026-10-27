@@ -22,7 +22,8 @@ A small, cross-platform desktop app (macOS, Windows, Linux) for tuning the built
 | --- | --- |
 | ![Balanced Daily preset](docs/images/main.png) | ![Gaming preset with a lowered output level](docs/images/gaming-level.png) |
 
-Generate Screenshots - `python docs/make_screenshots.py`.*
+*Screenshots are taken in demo mode (`python run.py --demo`). Regenerate them with
+`python docs/make_screenshots.py`.*
 
 ---
 
@@ -169,14 +170,19 @@ Files are written atomically and with private permissions. A corrupt `presets.js
 
 Build on the OS you are building for (PyInstaller does not cross-compile). Python 3.10+ is required.
 
-| OS | Command | Result |
-| --- | --- | --- |
-| macOS | `bash packaging/build_mac.sh` | `dist/Arc PEQ.app` (ad-hoc signed) |
-| Windows | `packaging\build_windows.bat` | `dist\ArcPEQ\ArcPEQ.exe` (copy the whole folder) |
-| Linux | `bash packaging/build_linux.sh` | `dist/ArcPEQ/ArcPEQ` |
+```bash
+python3 packaging/build.py
+```
 
-Each script creates `.venv`, installs the requirements plus PyInstaller and Pillow, generates the icon files from the
-in-code logo, and runs `packaging/arcpeq.spec`.
+One script for every OS. If [uv](https://docs.astral.sh/uv/) is installed it runs `uv sync` and builds with it;
+otherwise it creates a separate `.venv-build` and installs with pip. It generates the icons from the in-code logo,
+runs `packaging/arcpeq.spec`, and on macOS ad-hoc signs the app.
+
+| OS | Result |
+| --- | --- |
+| macOS | `dist/Arc PEQ.app` |
+| Windows | `dist\ArcPEQ\ArcPEQ.exe` (copy the whole folder) |
+| Linux | `dist/ArcPEQ/ArcPEQ` |
 
 On macOS, drag the app to Applications and, the first time, **right-click > Open** (it is signed ad hoc, not
 notarised by Apple). Sharing it with others properly needs an Apple Developer ID, code signing and notarisation.
