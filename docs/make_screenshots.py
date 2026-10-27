@@ -1,5 +1,12 @@
-"""Regenerates docs/images/*.png and demo.gif from the demo backend (no hardware needed).
-Run from the project root:  QT_QPA_PLATFORM=offscreen python docs/make_screenshots.py   (needs Pillow)"""
+"""Regenerates docs/images/*.png and demo.gif.
+
+    python docs/make_screenshots.py            # demo mode: two pretend devices, no hardware needed
+    python docs/make_screenshots.py --real     # use the Arc that is plugged in
+
+Run it from the project root (needs Pillow). It only loads presets on screen and moves sliders: it never presses
+Apply or Save, so nothing is written to a real device. It uses a temporary home folder, so your own presets,
+backups and settings are untouched. With --real the device name may include your serial number: check the images
+before publishing them."""
 import os
 import sys
 import tempfile
@@ -20,7 +27,7 @@ from PySide6.QtWidgets import QApplication              # noqa: E402
 
 from arcpeq.app import STYLE, MainWindow                # noqa: E402
 from arcpeq.core import LIBRARY                         # noqa: E402
-from arcpeq.device import DemoBackend                   # noqa: E402
+from arcpeq.device import DemoBackend, RealBackend      # noqa: E402
 
 OUT = ROOT / "docs" / "images"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -36,10 +43,13 @@ def pump(s):
 
 
 MainWindow.msg = lambda self, *a, **k: True
-w = MainWindow(DemoBackend(), demo=True)
+REAL = "--real" in sys.argv
+w = MainWindow(RealBackend() if REAL else DemoBackend(), demo=not REAL)
 w.resize(1240, 800)
 w.show()
-pump(2.6)
+pump(5.0 if REAL else 2.6)                              # a real device needs time to be found and read
+if REAL and not w.connected:
+    sys.exit("No device found. Plug in the Arc, close the Audiocular web editor and try again.")
 preset = {p.id: p for p in LIBRARY}
 frames = []
 
